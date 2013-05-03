@@ -1,2 +1,1 @@
-do ()->
-  console.log("Holla!");
+console.log sayHello()

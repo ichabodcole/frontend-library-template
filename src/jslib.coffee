@@ -1,2 +1,3 @@
-do ()->
-  console.log "hello!"
+window.app = app ? {}
+app.sayHello = ()->
+  return "Hello World!"

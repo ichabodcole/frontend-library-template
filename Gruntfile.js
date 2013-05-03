@@ -8,6 +8,13 @@ var folderMount = function folderMount(connect, point){
 module.exports = function(grunt){
   grunt.initConfig({
     pkg:grunt.file.readJSON('package.json'),
+    mocha: {
+      all: ['test/**/*.html'],
+      options: {
+        reporter: 'Nyan',
+        run: true
+      }
+    },
     coffee: {
       library: {
         files: {
@@ -43,12 +50,17 @@ module.exports = function(grunt){
       min: {
         files: ['dist/<%= pkg.name %>.js'],
         tasks: ['uglify']
+      },
+      test: {
+        files: ['test/spec/*.js'],
+        tasks: ['mocha']
       }
     },
     connect: {
       livereload: {
         options: {
           base: 'examples/',
+          hostname: 'localhost',
           port: 9001,
           middleware: function(connect, options) {
             return [lrSnippet, folderMount(connect, options.base)];
@@ -63,8 +75,11 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-regarde');
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-mocha');
 
-  grunt.registerTask('default', ['coffee', 'uglify', 'livereload-start', 'connect', 'regarde']);
+  // grunt.loadTasks('node_modules/grunt-mocha/tasks/');
+
+  grunt.registerTask('default', ['coffee', 'uglify', 'livereload-start', 'connect', 'regarde', 'mocha']);
   // grunt.registerTask('default', ['plugin']);
 
 };

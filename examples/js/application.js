@@ -1,6 +1,4 @@
 (function() {
-  (function() {
-    return console.log("Holla!");
-  })();
+  console.log(sayHello());
 
 }).call(this);
