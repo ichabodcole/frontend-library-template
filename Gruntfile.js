@@ -53,7 +53,7 @@ module.exports = function(grunt){
       },
       test: {
         files: ['test/spec/*.js'],
-        tasks: ['mocha']
+        tasks: ['mocha', 'livereload']
       }
     },
     connect: {
@@ -61,7 +61,16 @@ module.exports = function(grunt){
         options: {
           base: 'examples/',
           hostname: 'localhost',
-          port: 9001,
+          port: 9000,
+          middleware: function(connect, options) {
+            return [lrSnippet, folderMount(connect, options.base)];
+          }
+        }
+      },
+      test: {
+        options: {
+          hostname: 'localhost',
+          port: 9005,
           middleware: function(connect, options) {
             return [lrSnippet, folderMount(connect, options.base)];
           }
@@ -77,9 +86,5 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-mocha');
 
-  // grunt.loadTasks('node_modules/grunt-mocha/tasks/');
-
   grunt.registerTask('default', ['coffee', 'uglify', 'livereload-start', 'connect', 'regarde', 'mocha']);
-  // grunt.registerTask('default', ['plugin']);
-
 };
