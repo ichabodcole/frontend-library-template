@@ -1,5 +1,5 @@
 var path = require('path');
-var lrSnippet = require('grunt-contrib-livereload/lib/utils').livereloadSnippet;
+var lrSnippet = require('connect-livereload')();
 
 var folderMount = function folderMount(connect, point){
   return connect.static(path.resolve(point));
@@ -15,6 +15,13 @@ module.exports = function(grunt){
         run: true
       }
     },
+    sass: {
+      examples: {
+        files: {
+          'examples/styles/main.css': 'examples/styles/sass/main.scss'
+        }
+      }
+    },
     coffee: {
       library: {
         files: {
@@ -26,6 +33,17 @@ module.exports = function(grunt){
           'examples/js/lib/<%= pkg.name %>.js': 'src/<%= pkg.name %>.coffee',
           'examples/js/application.js': 'examples/js/application.coffee'
         }
+      },
+      test: {
+        files: [
+          {
+            expand: true,
+            cwd: 'test/spec/coffee',
+            src: ['**/*.coffee'],
+            dest: 'test/spec',
+            ext: '.js'
+          }
+        ]
       }
     },
     uglify: {
@@ -38,10 +56,16 @@ module.exports = function(grunt){
         }
       }
     },
-    regarde: {
+    watch: {
       livereload: {
-        files: ['examples/**/*.html', 'examples/**/*.js'],
-        tasks: ['livereload']
+        files: [
+          'examples/**/*.html',
+          'examples/**/*.js',
+          'examples/**/*.css'
+        ],
+        options: {
+          livereload: true
+        }
       },
       compile: {
         files: ['**/*.coffee'],
@@ -53,7 +77,7 @@ module.exports = function(grunt){
       },
       test: {
         files: ['test/spec/*.js'],
-        tasks: ['mocha', 'livereload']
+        tasks: ['mocha']
       }
     },
     connect: {
@@ -79,12 +103,12 @@ module.exports = function(grunt){
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-livereload');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-regarde');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-mocha');
 
-  grunt.registerTask('default', ['coffee', 'uglify', 'livereload-start', 'connect', 'regarde', 'mocha']);
+  grunt.registerTask('default', ['coffee', 'connect', 'uglify', 'watch', 'mocha', 'sass']);
 };

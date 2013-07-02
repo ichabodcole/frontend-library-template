@@ -1,1 +1,2 @@
-console.log sayHello()
+lib = new JsLib()
+console.log lib.sayHello()
