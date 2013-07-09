@@ -1,6 +1,6 @@
 {
   "name": "jslib",
-  "version": "0.1.1",
+  "version": "0.3.1",
   "description": "Template for JavaScrip libraries",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,9 @@
   ],
   "author": "Cole",
   "license": "MIT",
+  "dependencies": {
+    "bower": "~0.9.2"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-watch": "~0.4.4",
@@ -23,7 +26,6 @@
     "grunt-mocha": "~0.3.1",
     "chai": "~1.6.0",
     "mocha": "~1.9.0",
-    "growl": "~1.7.0",
-    "bower": "~0.9.2"
+    "growl": "~1.7.0"
   }
 }
